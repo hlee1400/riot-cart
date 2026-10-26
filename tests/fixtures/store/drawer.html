@@ -1,0 +1,30 @@
+<!doctype html><html><head><title>Drawer Tee</title><script src="/en-us/store.js"></script></head><body>
+<h1 class="product-title" style="text-transform: uppercase">Drawer Tee</h1>
+<span class="price">$30.00</span>
+<fieldset class="sizes" aria-label="Size">
+  <label for="sz-s" class="opt"><input id="sz-s" type="radio" name="sz" value="S" style="position:absolute;opacity:0;width:0;height:0"><span>S</span></label>
+  <label for="sz-m" class="opt"><input id="sz-m" type="radio" name="sz" value="M" style="position:absolute;opacity:0;width:0;height:0"><span>M</span></label>
+</fieldset>
+<button id="add">Add to Cart</button>
+<div id="error"></div>
+<div role="button" class="cart-button" onclick="openDrawer()" aria-label="Open cart">Cart</div>
+<div id="drawer" hidden><div class="dlines"></div><a href="https://pay.test/checkout">Checkout</a></div>
+<script>
+function render() {
+  const box = document.querySelector(".dlines"); box.innerHTML = "";
+  getCart().forEach((l, i) => {
+    const d = document.createElement("div"); d.className = "dline";
+    d.innerHTML = `<h2 class="dtitle">${l.title}</h2><span class="dopt">${l.options}</span>
+      <div class="dqty">${l.qty}</div><div class="dplus" role="button" aria-label="Increase quantity">+</div><span class="dprice">${l.price}</span>`;
+    d.querySelector(".dplus").onclick = () => { const c = getCart(); c[i].qty += 1; setCart(c); setTimeout(render, 300); };
+    box.appendChild(d);
+  });
+}
+function openDrawer() { document.getElementById("drawer").hidden = false; render(); }
+document.getElementById("add").onclick = () => {
+  const r = document.querySelector("input[name=sz]:checked");
+  if (!r) return showError("Please select a size");
+  addLine("Drawer Tee", r.value, 1, "$30.00");
+  openDrawer();
+};
+</script></body></html>

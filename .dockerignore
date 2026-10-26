@@ -1,0 +1,17 @@
+.venv
+runs
+.git
+.gitignore
+__pycache__
+*.pyc
+.pytest_cache
+.superpowers
+.claude
+tests
+discovery
+docs
+contracts
+retailer-recipes
+.env
+.env.*
+*.md

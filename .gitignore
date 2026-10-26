@@ -1,0 +1,12 @@
+.env
+runs/
+discovery/
+__pycache__/
+.venv/
+*.pyc
+.superpowers/
+discovery_err.log
+.claude/
+.pytest_cache/
+*.log
+deploy/sprite.json

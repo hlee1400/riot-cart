@@ -1,0 +1,46 @@
+# Recipe for the fake test store in tests/fixtures/store/ (not Riot).
+schema_version: 1
+recipe_version: "0.0.1-test"
+retailer: fake_store
+base_url: https://store.test/en-us/
+allowed_origins: ["https://store.test"]
+allowed_path_prefixes: ["/en-us/"]
+cookie_banner_accept:
+  - {role: button, name: "Accept cookies"}
+search:
+  url_template: "https://store.test/en-us/search?q={query}"
+  result_item: [{css: "li.result"}]
+  result_title: [{css: ".result-title"}]
+  result_link: [{css: "a.result-link"}]
+product:
+  title: [{css: "h1.product-title"}]
+  price: [{css: ".price"}]
+  quantity_input: [{role: spinbutton, name: "Quantity"}, {css: "#qty"}]
+  add_to_cart: [{role: button, name: "Add to Cart", exact: true}, {css: "#add"}]
+  added_signal: [{css: "#added:not([hidden])"}]
+  option_groups:
+    - name: size
+      kind: buttons
+      group: [{role: group, name: "Size"}, {css: ".sizes"}]
+      option: [{css: "button.size"}]
+      value_label: text
+      selected_css: "[aria-pressed=true]"
+      unavailable_css: "[disabled]"
+    - name: color
+      aliases: [shade]
+      kind: select
+      group: [{css: "select#color"}]
+      option: [{css: "option"}]
+      value_label: text
+      selected_css: ":checked"
+cart:
+  url: https://store.test/en-us/cart
+  line_item: [{css: ".line"}]
+  line_title: [{css: ".line-title"}]
+  line_options: [{css: ".line-options"}]
+  line_quantity: [{css: ".line-qty"}]
+  line_price: [{css: ".line-price"}]
+  quantity_control: [{css: ".line-qty"}]
+blockers:
+  login_css: ["form#login"]
+  challenge_css: ["#challenge"]

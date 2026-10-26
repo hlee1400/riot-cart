@@ -1,0 +1,32 @@
+# Fake-store recipe shaped like Riot: cart drawer opened by a button, "+" quantity control, hidden radios.
+schema_version: 1
+recipe_version: "0.0.1-drawer"
+retailer: fake_store
+base_url: https://store.test/en-us/
+allowed_origins: ["https://store.test"]
+allowed_path_prefixes: ["/en-us/"]
+search:
+  url_template: "https://store.test/en-us/search?q={query}"
+  result_item: [{css: "li.result"}]
+  result_title: [{css: ".result-title"}]
+  result_link: [{css: "a.result-link"}]
+product:
+  title: [{css: "h1.product-title"}]
+  price: [{css: ".price"}]
+  add_to_cart: [{role: button, name: "Add to Cart"}]
+  option_groups:
+    - name: size
+      kind: radio
+      group: [{css: "fieldset.sizes"}]
+      option: [{css: "label.opt"}]
+      value_label: text
+      selected_css: ":has(input:checked)"
+      unavailable_css: ":has(input:disabled)"
+cart:
+  open_button: [{role: button, name: "Open cart"}]
+  line_item: [{css: ".dline"}]
+  line_title: [{css: ".dtitle"}]
+  line_options: [{css: ".dopt"}]
+  line_quantity: [{css: ".dqty"}]
+  line_price: [{css: ".dprice"}]
+  quantity_increase: [{role: button, name: "Increase quantity"}]

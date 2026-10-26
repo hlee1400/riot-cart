@@ -1,0 +1,53 @@
+<!doctype html><html><head><title>Lab</title><script src="/en-us/store.js"></script></head><body>
+<!-- One page, several misbehaving add-to-cart flows; the mode is the URL slug (see LAB below). -->
+<h1 class="product-title"></h1>
+<span class="price">$40.00</span>
+<div class="sizes" role="group" aria-label="Size">
+  <button class="size" aria-pressed="false">S</button>
+  <button class="size" aria-pressed="false">M</button>
+  <button class="size" aria-pressed="false">L</button>
+</div>
+<input id="qty" type="number" value="1" min="1" aria-label="Quantity">
+<button id="add">Add to Cart</button>
+<button id="limited" hidden>Switch to limited run</button>
+<div id="added" hidden>Added to cart</div>
+<div id="error"></div>
+<a href="/en-us/cart" id="cart-link">Cart</a>
+<script>
+const LAB = {
+  "lab-slow": "Lab Slow Scarf",      // adds at once, but the "added" signal shows only after 7 s
+  "lab-lazy": "Lab Lazy Scarf",      // the first click is ignored (page not ready); later clicks add
+  "lab-gift": "Lab Gift Scarf",      // adds the scarf plus an unrelated free line
+  "lab-twin": "Lab Twin Scarf",      // adds two lines with the same title
+  "lab-limit": "Lab Limit Scarf",    // first click ignored; "limited run" then sells the item out
+  "lab-gate": "Lab Gate Scarf",      // clicking add shows a login form at once
+  "lab-lategate": "Lab Lategate Scarf", // clicking add shows a login form after 1 s
+};
+const mode = location.pathname.split("/").pop();
+const title = LAB[mode];
+document.title = title;
+document.querySelector("h1").textContent = title;
+pressable("button.size", "aria-pressed");
+const show = () => { document.getElementById("added").hidden = false; };
+const login = () => { const f = document.createElement("form"); f.id = "login";
+  f.innerHTML = '<input type="password" aria-label="Password">'; document.body.appendChild(f); };
+let clicks = 0;
+document.getElementById("limited").onclick = () => { document.getElementById("add").disabled = true; };
+if (mode === "lab-limit") document.getElementById("limited").hidden = false;
+document.getElementById("add").onclick = () => {
+  clicks += 1;
+  const size = pressed("button.size", "aria-pressed");
+  if (!size) return showError("Please select a size");
+  const qty = parseInt(document.getElementById("qty").value);
+  const put = (t, o) => { const c = getCart(), hit = c.find(l => l.title === t && l.options === o);
+    if (hit) hit.qty += qty; else c.push({title: t, options: o, qty, price: "$40.00"}); setCart(c); };
+  if (mode === "lab-gate") return login();
+  if (mode === "lab-lategate") return setTimeout(login, 1000);
+  if ((mode === "lab-lazy" || mode === "lab-limit") && clicks === 1) return;
+  put(title, `Size: ${size}`);
+  if (mode === "lab-gift") put("Free Sticker", "");
+  if (mode === "lab-twin") put(title, "Size: L");
+  if (mode === "lab-slow") return setTimeout(show, 7000);
+  show();
+};
+</script></body></html>

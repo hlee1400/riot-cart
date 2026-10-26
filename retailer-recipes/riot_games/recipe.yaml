@@ -1,0 +1,71 @@
+# Riot Games merch store recipe (2026-10-18), built from LunaRoute djev discovery.
+schema_version: 1
+recipe_version: "1.0.0"
+retailer: riot_games
+base_url: https://merch.riotgames.com/en-us/
+allowed_origins: ["https://merch.riotgames.com"]
+allowed_path_prefixes: ["/en-us/"]
+cookie_banner_accept:
+  - {css: 'button[aria-label="Close this consent banner"]'}
+
+search:
+  # The search box submits to this URL (seen live: /en-us/search/?query=hoodie&page=1&sort=dateDesc).
+  url_template: "https://merch.riotgames.com/en-us/search/?query={query}"
+  result_item: [{css: 'article[class*="product-card_product-card__"]'}]
+  result_title: [{css: 'a[aria-label="View Product"]'}, {css: 'h2 a[href*="/product/"]'}]
+  result_link: [{css: 'a[class*="product-card_product-link__"]'}, {css: 'a[aria-label="View Product"]'}]
+
+product:
+  # Scoped to the main product block: recommendation carousels repeat the same widgets further down.
+  title: [{css: '[class*="product-details_product-details__"] h1'}, {css: 'h1[class*="heading_heading__"]'}]
+  price: [{css: '[class*="product-details_price-bar__"]'}]
+  add_to_cart:
+    - {css: '[class*="product-details_product-details__"] button[aria-label="Add to Cart"]'}
+    - {role: button, name: "Add to Cart", exact: true}
+  # No quantity box on Riot product pages; quantity is raised with the cart line's "+" control.
+  option_groups:
+    - name: size
+      kind: radio
+      group: [{css: '[class*="product-details_product-options__"] fieldset:has(input[id*="-size-"])'}]
+      option: [{css: 'label[class*="variant-selector_option__"]'}]
+      value_label: text
+      selected_css: ":has(input:checked)"
+      unavailable_css: ':has(input:disabled), [class*="disabled"], [class*="unavailable"]'
+    - name: game skin
+      aliases: [skin, edition, version, style]
+      kind: radio
+      group: [{css: '[class*="product-details_product-options__"] fieldset:has(input[id*="-game_skin-"])'}]
+      option: [{css: 'label[class*="variant-selector_option__"]'}]
+      value_label: text
+      selected_css: ":has(input:checked)"
+      unavailable_css: ':has(input:disabled), [class*="disabled"], [class*="unavailable"]'
+    - name: frame
+      aliases: [framed, framing]
+      kind: radio
+      group: [{css: '[class*="product-details_product-options__"] fieldset:has(input[id*="-framed-"])'}]
+      option: [{css: 'label[class*="variant-selector_option__"]'}]
+      value_label: text
+      selected_css: ":has(input:checked)"
+      unavailable_css: ':has(input:disabled), [class*="disabled"], [class*="unavailable"]'
+    - name: poster size
+      aliases: [print size, dimensions]
+      kind: radio
+      group: [{css: '[class*="product-details_product-options__"] fieldset:has(input[id*="-poster_size-"])'}]
+      option: [{css: 'label[class*="variant-selector_option__"]'}]
+      value_label: text
+      selected_css: ":has(input:checked)"
+      unavailable_css: ':has(input:disabled), [class*="disabled"], [class*="unavailable"]'
+
+cart:
+  # Riot's cart is a drawer opened from the header; checkout lives on checkout.merch.riotgames.com (blocked).
+  open_button: [{css: 'div[class*="cart-button_cart-button__"]'}]
+  line_item: [{css: '[class*="cart_cart-item__"]'}, {css: '[class*="cart-line-item_cart-line-item-details__"]'}]
+  line_title: [{css: '[class*="cart-line-item_cart-line-item-title__"] h2'}, {css: 'h2[class*="heading_heading__"]'}]
+  line_options: [{css: '[class*="cart-line-item_cart-line-item-tags__"]'}, {css: 'span[class*="tag_tag__"]'}]
+  line_quantity: [{css: '[class*="cart-line-item-quantity_quantity-count__"]'}]
+  line_price: [{css: '[class*="cart-line-item_cart-line-item-price__"]'}]
+  quantity_increase: [{css: '[class*="cart-line-item-quantity_increase-button__"]'}]
+
+blockers:
+  login_css: []
+  challenge_css: []

@@ -1,0 +1,25 @@
+<!doctype html><html><head><title>Arcane Jinx Hoodie</title><script src="/en-us/store.js"></script></head><body>
+<h1 class="product-title">Arcane Jinx Hoodie</h1>
+<span class="price">$64.99</span>
+<div class="sizes" role="group" aria-label="Size">
+  <button class="size" aria-pressed="false">S</button>
+  <button class="size" aria-pressed="false">M</button>
+  <button class="size" aria-pressed="false" disabled>L - Sold Out</button>
+</div>
+<label for="color">Color</label>
+<select id="color" aria-label="Color"><option>Black</option><option>Blue</option></select>
+<input id="qty" type="number" value="1" min="1" aria-label="Quantity">
+<button id="add">Add to Cart</button>
+<div id="added" hidden>Added to cart</div>
+<div id="error"></div>
+<a href="/en-us/cart" id="cart-link">Cart</a>
+<a href="https://pay.test/checkout" id="checkout">Checkout</a>
+<script>
+pressable("button.size", "aria-pressed");
+document.getElementById("add").onclick = () => {
+  const size = pressed("button.size", "aria-pressed");
+  if (!size) return showError("Please select a size");
+  const color = document.getElementById("color").value;
+  addLine("Arcane Jinx Hoodie", `Size: ${size} / Color: ${color}`, parseInt(document.getElementById("qty").value), "$64.99");
+};
+</script></body></html>

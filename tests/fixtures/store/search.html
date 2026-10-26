@@ -1,0 +1,21 @@
+<!doctype html><html><head><title>Search</title><script src="/en-us/store.js"></script></head><body>
+<div id="cookies"><p>We use cookies.</p><button onclick="document.getElementById('cookies').remove()">Accept cookies</button></div>
+<h1>Search results</h1>
+<ul id="results"></ul>
+<script>
+const CATALOG = [
+  ["Arcane Jinx Hoodie", "hoodie"], ["Arcane Jinx Hoodie Kids", "hoodie-kids"],
+  ["Poro Pin", "pin"], ["Poro Pin", "pin2"], ["Teemo Mug", "mug"], ["Jinx Tee", "tee"], ["Drawer Tee", "drawer"], ["Sold Out Cap", "soldout"],
+  ["Lab Slow Scarf", "lab-slow"], ["Lab Lazy Scarf", "lab-lazy"], ["Lab Gift Scarf", "lab-gift"],
+  ["Lab Twin Scarf", "lab-twin"], ["Lab Limit Scarf", "lab-limit"], ["Lab Gate Scarf", "lab-gate"],
+  ["Lab Lategate Scarf", "lab-lategate"],
+];
+const q = (new URLSearchParams(location.search).get("q") || "").toLowerCase().split(/\s+/).filter(Boolean);
+const ul = document.getElementById("results");
+for (const [title, slug] of CATALOG) {
+  if (!q.some(w => title.toLowerCase().includes(w))) continue;
+  const li = document.createElement("li"); li.className = "result";
+  li.innerHTML = `<a class="result-link" href="/en-us/p/${slug}"><span class="result-title">${title}</span></a>`;
+  ul.appendChild(li);
+}
+</script></body></html>

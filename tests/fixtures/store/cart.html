@@ -1,0 +1,17 @@
+<!doctype html><html><head><title>Cart</title><script src="/en-us/store.js"></script></head><body>
+<h1>Your cart</h1>
+<div id="lines"></div>
+<button id="checkout-btn" onclick="location.href='https://pay.test/checkout'">Proceed to Checkout</button>
+<script>
+const box = document.getElementById("lines");
+getCart().forEach((l, i) => {
+  const d = document.createElement("div"); d.className = "line";
+  d.innerHTML = `<span class="line-title">${l.title}</span> <span class="line-options">${l.options}</span>
+    <input class="line-qty" type="number" aria-label="Line quantity" value="${l.qty}">
+    <span class="line-price">${l.price}</span>`;
+  d.querySelector(".line-qty").addEventListener("change", e => {
+    const c = getCart(); c[i].qty = parseInt(e.target.value); setCart(c);
+  });
+  box.appendChild(d);
+});
+</script></body></html>

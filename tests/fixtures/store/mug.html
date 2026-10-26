@@ -1,0 +1,21 @@
+<!doctype html><html><head><title>Teemo Mug</title><script src="/en-us/store.js"></script></head><body>
+<h1 class="product-title">Teemo Mug</h1>
+<span class="price">$20.00</span>
+<div class="editions" role="radiogroup" aria-label="Edition">
+  <button class="ed" role="radio" aria-checked="false">Standard</button>
+  <button class="ed" role="radio" aria-checked="false">Collector's</button>
+</div>
+<input id="qty" type="number" value="1" min="1" aria-label="Quantity">
+<button id="add">Add to Cart</button>
+<div id="added" hidden>Added to cart</div>
+<div id="error"></div>
+<a href="/en-us/cart" id="cart-link">Cart</a>
+<a href="https://pay.test/checkout" id="checkout">Checkout</a>
+<script>
+pressable("button.ed", "aria-checked");
+document.getElementById("add").onclick = () => {
+  const ed = pressed("button.ed", "aria-checked");
+  if (!ed) return showError("Please select an edition");
+  addLine("Teemo Mug", `Edition: ${ed}`, parseInt(document.getElementById("qty").value), "$20.00");
+};
+</script></body></html>

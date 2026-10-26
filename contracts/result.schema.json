@@ -1,0 +1,179 @@
+{
+  "$defs": {
+    "CartLine": {
+      "properties": {
+        "product_name": {
+          "title": "Product Name",
+          "type": "string"
+        },
+        "product_url": {
+          "title": "Product Url",
+          "type": "string"
+        },
+        "options": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Options",
+          "type": "object"
+        },
+        "defaulted": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Defaulted",
+          "type": "array"
+        },
+        "quantity": {
+          "title": "Quantity",
+          "type": "integer"
+        },
+        "observed_price": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Price"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "verified": {
+          "title": "Verified",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "product_name",
+        "product_url",
+        "quantity",
+        "verified"
+      ],
+      "title": "CartLine",
+      "type": "object"
+    },
+    "Price": {
+      "properties": {
+        "amount": {
+          "title": "Amount",
+          "type": "string"
+        },
+        "currency": {
+          "title": "Currency",
+          "type": "string"
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ],
+      "title": "Price",
+      "type": "object"
+    },
+    "Status": {
+      "enum": [
+        "CART_READY",
+        "PRODUCT_NOT_FOUND",
+        "AMBIGUOUS_MATCH",
+        "VARIANT_UNAVAILABLE",
+        "AUTH_REQUIRED",
+        "VERIFICATION_REQUIRED",
+        "RECOVERY_FAILED",
+        "FAILED"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "properties": {
+    "status": {
+      "$ref": "#/$defs/Status"
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    },
+    "cart": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/CartLine"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "candidates": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "checkout_submitted": {
+      "const": false,
+      "default": false,
+      "title": "Checkout Submitted",
+      "type": "boolean"
+    },
+    "recovery_used": {
+      "default": false,
+      "title": "Recovery Used",
+      "type": "boolean"
+    },
+    "model_calls": {
+      "default": 0,
+      "title": "Model Calls",
+      "type": "integer"
+    },
+    "recovery_trace": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Recovery Trace",
+      "type": "array"
+    },
+    "failed_step": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Failed Step"
+    },
+    "runner": {
+      "default": "local",
+      "title": "Runner",
+      "type": "string"
+    },
+    "recipe_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Recipe Version"
+    },
+    "duration_ms": {
+      "default": 0,
+      "title": "Duration Ms",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "status",
+    "message"
+  ],
+  "title": "Result",
+  "type": "object"
+}
